@@ -19,7 +19,7 @@ function installFromCargoBuildLog() (
   local select_non_deps_artifact='select(contains("/deps/artifact/") | not)'
 
   # Only install binaries and libraries from the current workspace as a sanity check
-  local members="$(command cargo metadata --format-version 1 | @jq@ -c '.workspace_members')"
+  local members="$(command cargo metadata --format-version 1 --no-deps | @jq@ -c '.workspace_members')"
   local select_non_test_members='select(.reason == "compiler-artifact" and .profile.test == false)
     | select(.package_id as $pid
       | '"${members}"'
